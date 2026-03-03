@@ -1,0 +1,25 @@
+name: Compress
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_path:
+        description: 'Path to file to be compressed'
+        required: true
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Compressor
+        run: |
+          python compressor.py compress ${{ github.event.inputs.file_path }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: compressed-file
+          path: ${{ github.event.inputs.file_path }}.zip
